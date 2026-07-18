@@ -1,6 +1,6 @@
 # Dependency Lock and Resolution Strategy
 
-**Status**: Proposed
+**Status**: Accepted
 **Date**: 2026-07-18
 
 ## Context
@@ -35,12 +35,13 @@ Rely on version constraints and resolve dependencies at install time.
 
 ## Decision
 
-Choose Option 1. The project will define one canonical resolver path, commit lock artifacts, and enforce policy validation before setup success is reported. This is the strongest match for deterministic identity and controlled upgrades while preserving a simple contributor flow.
+Choose Option 1. The project will define one canonical resolver path, commit lock artifacts, and enforce policy validation before setup success is reported. The canonical contributor workflow will use uv to create the environment and synchronize dependencies so setup remains straightforward while still producing deterministic identity. This is the strongest match for deterministic identity and controlled upgrades while preserving a simple contributor flow.
 
 ## Implementation Notes (optional)
 
 - Core dependency groups must be explicitly classified as pinned or intentionally constrained.
 - Lock update procedures require documented review criteria and rollback guidance.
+- uv is the default path for dependency synchronization and validation.
 
 ## References
 

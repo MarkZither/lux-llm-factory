@@ -1,6 +1,6 @@
 # Environment Profiles and Progression
 
-**Status**: Proposed
+**Status**: Accepted
 **Date**: 2026-07-18
 
 ## Context
@@ -35,12 +35,13 @@ Allow each environment to define its own commands and policy interpretation.
 
 ## Decision
 
-Choose Option 1. The project will use tiered environment profiles under one canonical command and policy contract, with local CPU as required baseline, free alternatives as optional best effort profiles, and RunPod as optional upgrade profile. This best aligns with canonical setup consistency, deterministic governance continuity, and staged scalability.
+Choose Option 1. The project will use tiered environment profiles under one canonical command and policy contract, with local CPU as required baseline, free alternatives as optional best effort profiles, and RunPod as optional upgrade profile. Every profile remains reachable through the same uv-based setup and validation workflow, which preserves canonical setup consistency, deterministic governance continuity, and staged scalability.
 
 ## Implementation Notes (optional)
 
 - Profiles must declare compliance level and known limitations.
 - Promotion from optional profile to baseline support requires explicit review and plan update.
+- uv remains the canonical command entry for setup, validation, and execution across profiles.
 
 ## References
 

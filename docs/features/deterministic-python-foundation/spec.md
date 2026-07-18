@@ -8,7 +8,7 @@
 - **Objective**: Establish one deterministic local setup foundation so contributors can prepare the project environment and run project entrypoints with repeatable outcomes.
 - **Primary user**: New and returning contributors working in local development environments.
 - **Value delivered**: Faster onboarding, fewer setup failures, and reproducible training preparation across contributors.
-- **Scope**: Included: Python toolchain standardization, virtual environment standardization, dependency resolution and lock policy, canonical setup and execution entrypoints, and setup documentation. Excluded: training logic changes, model quality improvements, CI redesign, and cloud deployment workflows.
+- **Scope**: Included: Python toolchain standardization, uv-based environment management, dependency resolution and lock policy, canonical setup and execution entrypoints, and setup documentation. Excluded: training logic changes, model quality improvements, CI redesign, and cloud deployment workflows.
 - **Change type**: new surface
 - **Describes AI capability**: no
 - **Primary success criterion**: New contributors can complete deterministic environment initialization using one canonical documented flow on their first attempt.
@@ -91,7 +91,7 @@ A contributor can run setup and project execution through one canonical command 
 
 - **FR-001**: The system MUST define one canonical local setup flow that establishes a project runnable environment.
 - **FR-002**: The system MUST define and publish a Python toolchain policy that makes supported version boundaries explicit.
-- **FR-003**: The system MUST standardize local virtual environment expectations used by contributors.
+- **FR-003**: The system MUST standardize local environment management expectations used by contributors through a single uv-based workflow.
 - **FR-004**: The system MUST define an explicit dependency resolution and lock strategy that yields deterministic dependency identity for the same inputs.
 - **FR-005**: The system MUST require core tool and dependency versions to be pinned or intentionally constrained with rationale available to contributors.
 - **FR-006**: The system MUST expose reproducible command entrypoints for setup and execution through one canonical documented path.
@@ -100,7 +100,7 @@ A contributor can run setup and project execution through one canonical command 
 
 ### Key Entities *(include if the feature involves data)*
 
-- **Environment Policy**: The declared rules for Python version boundaries, virtual environment expectations, and dependency version behavior.
+- **Environment Policy**: The declared rules for Python version boundaries, uv environment management expectations, and dependency version behavior.
 - **Dependency Identity**: The resolved package set identity for a setup execution under the declared policy.
 - **Canonical Setup Flow**: The ordered contributor journey from prerequisites through successful local ready state.
 

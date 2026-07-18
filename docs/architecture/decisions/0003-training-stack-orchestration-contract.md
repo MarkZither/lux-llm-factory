@@ -1,6 +1,6 @@
 # Training Stack Orchestration Contract
 
-**Status**: Proposed
+**Status**: Accepted
 **Date**: 2026-07-18
 
 ## Context

@@ -1,6 +1,6 @@
 # Python Runtime and Platform Support
 
-**Status**: Proposed
+**Status**: Accepted
 **Date**: 2026-07-18
 
 ## Context
@@ -35,12 +35,13 @@ Allow a bounded version range for the baseline and rely on compatibility rules.
 
 ## Decision
 
-Choose Option 1. The project will use a single Python minor baseline for canonical deterministic support and define explicit support tiers for local CPU, free hosted alternatives, and RunPod. This best satisfies deterministic setup first, keeps continuity across environments, and minimizes support burden for the current team size.
+Choose Option 1. The project will use a single Python minor baseline for canonical deterministic support and define explicit support tiers for local CPU, free hosted alternatives, and RunPod. The canonical contributor workflow will use uv for environment creation and dependency synchronization, which keeps setup deterministic and aligned with the project’s existing tooling strategy. This best satisfies deterministic setup first, keeps continuity across environments, and minimizes support burden for the current team size.
 
 ## Implementation Notes (optional)
 
 - Baseline runtime policy is recorded in the feature implementation artifacts and contributor setup documentation.
 - Tier labels are required in environment profile definitions.
+- uv is the canonical environment manager for local setup and validation.
 
 ## References
 

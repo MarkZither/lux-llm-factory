@@ -10,7 +10,7 @@ Deliver one canonical, deterministic setup and execution foundation for contribu
 
 ## Confirmed Inputs
 
-- Current dependency declarations exist in [pyproject.toml](../../../pyproject.toml) with Python `>=3.11` and core libraries (`torch`, `transformers`, `trl`, `datasets`, `peft`, `pyyaml`, `sentencepiece`, `evaluate`, `accelerate`).
+- Current dependency declarations exist in [pyproject.toml](../../../pyproject.toml) with Python `>=3.14` and core libraries (`torch`, `transformers`, `trl`, `datasets`, `peft`, `pyyaml`, `sentencepiece`, `evaluate`, `accelerate`).
 - Current runnable training script is [scripts/train_first_sft.py](../../../scripts/train_first_sft.py) and current sample config is [training/configs/first-run-cpu.yaml](../../../training/configs/first-run-cpu.yaml).
 - Repository strategy requires reproducibility from setup through execution.
 
@@ -177,9 +177,9 @@ python scripts/train_first_sft.py --config training/configs/first-run-cpu.yaml
 
 ### Environment Setup Baseline (current repository state)
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\python -m pip install --upgrade pip
-.\.venv\Scripts\python -m pip install "torch>=2.4.0" "transformers>=4.44.0" "trl>=0.10.1" "datasets>=2.20.0" "peft>=0.12.0" "pyyaml>=6.0.2" "sentencepiece>=0.2.0" "evaluate>=0.4.2" "accelerate>=0.33.0"
+uv python install 3.14
+uv venv --python 3.14
+uv sync
 ```
 
 ## ADR Follow Up
