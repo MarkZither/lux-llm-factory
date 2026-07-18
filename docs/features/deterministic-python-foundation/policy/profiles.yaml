@@ -1,0 +1,40 @@
+local-cpu:
+  profile_id: local-cpu
+  support_level: baseline
+  compute_class: cpu
+  constraints:
+    python: "3.14"
+    virtual_environment: ".venv"
+  policy_version: "1.0"
+colab-free:
+  profile_id: colab-free
+  support_level: optional
+  compute_class: free-hosted
+  constraints:
+    python: "3.14"
+    virtual_environment: ".venv"
+  policy_version: "1.0"
+kaggle-free:
+  profile_id: kaggle-free
+  support_level: optional
+  compute_class: free-hosted
+  constraints:
+    python: "3.14"
+    virtual_environment: ".venv"
+  policy_version: "1.0"
+hf-free:
+  profile_id: hf-free
+  support_level: optional
+  compute_class: free-hosted
+  constraints:
+    python: "3.14"
+    virtual_environment: ".venv"
+  policy_version: "1.0"
+runpod:
+  profile_id: runpod
+  support_level: optional
+  compute_class: gpu
+  constraints:
+    python: "3.14"
+    virtual_environment: ".venv"
+  policy_version: "1.0"
