@@ -97,6 +97,7 @@ A contributor can run setup and project execution through one canonical command 
 - **FR-006**: The system MUST expose reproducible command entrypoints for setup and execution through one canonical documented path.
 - **FR-007**: The system MUST provide setup documentation that enables first time contributors to complete initialization without undocumented steps.
 - **FR-008**: The system MUST fail setup safely when prerequisites or dependency policy validation fail and must not claim successful initialization.
+- **FR-009**: The canonical entrypoint commands MUST work reliably when invoked from the repository root through the documented uv-based workflow, including correct module resolution for project-local scripts and supporting modules.
 
 ### Key Entities *(include if the feature involves data)*
 
@@ -123,6 +124,7 @@ A contributor can run setup and project execution through one canonical command 
 | CC-002 | Policy violation error path | Setup input where one required tool or dependency is outside declared pin or constraint policy | Setup fails safely, reports policy violation clearly, and does not declare environment ready |
 | CC-003 | Interrupted setup recovery edge case | Setup process interrupted after partial progress, then canonical setup flow re-run | Final environment converges to the same deterministic ready state as a clean successful run |
 | CC-004 | Must NOT ambiguous onboarding path | Contributor follows official documentation for setup and execution | System must NOT require undocumented alternate commands or hidden manual steps to reach ready state |
+| CC-005 | Canonical command entrypoint execution | Contributor runs the documented setup and run commands from the repository root using the uv workflow | The commands complete successfully without manual path adjustments or hidden import-workaround steps |
 
 ## Invariants
 
@@ -143,3 +145,4 @@ N/A: purely additive new surface.
 | Version | Date | Change Summary | Trigger | Author |
 |---------|------|----------------|---------|--------|
 | 1.0 | 2026-07-18 | Initial draft | new work | GitHub Copilot |
+| 1.1 | 2026-07-19 | Added explicit requirement for reliable canonical entrypoint module resolution under the documented uv workflow | implementation drift from entrypoint execution issues | GitHub Copilot |

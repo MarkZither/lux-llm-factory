@@ -119,11 +119,14 @@ Deliver one canonical, deterministic setup and execution foundation for contribu
 - Onboarding dry run script or checklist for first time contributors
 - Reproducibility evidence collection template
 - Measurement protocol for `SC-001` through `SC-004`
+- Baseline and post fine tuning evaluation protocol aligned to [0007-llm-testing-baseline-and-benchmark-strategy](../../architecture/decisions/0007-llm-testing-baseline-and-benchmark-strategy.md)
+- First canonical baseline report for the current unfine tuned reference model with category and CEFR score breakdowns
 
 **Definition of done**:
 - Conformance cases pass in defined baseline conditions.
 - First time setup flow can be validated by a non-author contributor.
 - Deterministic identity checks are repeatable across validation runs.
+- Canonical baseline report exists and can be compared directly with post fine tuning runs.
 
 ## Stack Usage Contract
 
@@ -150,6 +153,7 @@ Deliver one canonical, deterministic setup and execution foundation for contribu
 3. Publish canonical setup, validate, and run command contract.
 4. Add profile progression documentation for free alternatives and RunPod.
 5. Execute conformance validation and publish readiness report.
+6. Publish first canonical evaluation baseline report before additional fine tuning iterations.
 
 ## Commands
 
@@ -190,3 +194,4 @@ Proposed ADRs have been created for this feature and must be reviewed by at leas
 2. [0002-dependency-lock-and-resolution-strategy](../../architecture/decisions/0002-dependency-lock-and-resolution-strategy.md)
 3. [0003-training-stack-orchestration-contract](../../architecture/decisions/0003-training-stack-orchestration-contract.md)
 4. [0004-environment-profiles-and-progression](../../architecture/decisions/0004-environment-profiles-and-progression.md)
+5. [0007-llm-testing-baseline-and-benchmark-strategy](../../architecture/decisions/0007-llm-testing-baseline-and-benchmark-strategy.md)

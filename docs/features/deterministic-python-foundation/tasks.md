@@ -19,12 +19,12 @@
 
 ## Phase 3: User Story 1 - Deterministic First Time Setup (P1)
 
-- [ ] Implement tracer bullet vertical slice for deterministic setup in scripts/envctl.py that executes setup, validates policy plus lock identity, and reports SetupOutcome for CC-001.
-- [ ] Implement local-cpu baseline policy enforcement in scripts/env_policy.py using docs/features/deterministic-python-foundation/policy/environment-policy.yaml for FR-001, FR-002, and FR-003.
-- [ ] [P] Implement lock identity generation and verification in scripts/lock_identity.py using docs/features/deterministic-python-foundation/contracts/lock-manifest-schema.md for FR-004 and FR-008.
-- [ ] [P] Implement safe failure taxonomy mapping in scripts/env_errors.py for PolicyViolation, LockMismatch, ProfileUnsupported, and PreflightFailure to satisfy FR-008 and CC-002.
-- [ ] Implement interrupted setup convergence behavior in scripts/envctl.py to satisfy CC-003 and deterministic rerun requirements.
-- [ ] Update canonical setup documentation in docs/features/deterministic-python-foundation/setup.md with one official setup sequence and no alternate hidden path for FR-007 and CC-004.
+- [x] Implement tracer bullet vertical slice for deterministic setup in scripts/envctl.py that executes setup, validates policy plus lock identity, and reports SetupOutcome for CC-001.
+- [x] Implement local-cpu baseline policy enforcement in scripts/env_policy.py using docs/features/deterministic-python-foundation/policy/environment-policy.yaml for FR-001, FR-002, and FR-003.
+- [x] [P] Implement lock identity generation and verification in scripts/lock_identity.py using docs/features/deterministic-python-foundation/contracts/lock-manifest-schema.md for FR-004 and FR-008.
+- [x] [P] Implement safe failure taxonomy mapping in scripts/env_errors.py for PolicyViolation, LockMismatch, ProfileUnsupported, and PreflightFailure to satisfy FR-008 and CC-002.
+- [x] Implement interrupted setup convergence behavior in scripts/envctl.py to satisfy CC-003 and deterministic rerun requirements.
+- [x] Update canonical setup documentation in docs/features/deterministic-python-foundation/setup.md with one official setup sequence and no alternate hidden path for FR-007 and CC-004.
 
 ## Phase 4: User Story 2 - Intentional Version Boundaries (P2)
 
