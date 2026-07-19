@@ -3,6 +3,10 @@
         "/^python -m unittest -v tests\\.test_envctl$/": {
             "approve": true,
             "matchCommandLine": true
+        },
+        "/^uv run python -m unittest discover -s tests -q$/": {
+            "approve": true,
+            "matchCommandLine": true
         }
     }
 }

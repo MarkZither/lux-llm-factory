@@ -157,6 +157,10 @@ ENV/
 env.bak/
 venv.bak/
 
+# Local training and setup artifacts
+models/
+.setup-state/
+
 # Spyder project settings
 .spyderproject
 .spyproject

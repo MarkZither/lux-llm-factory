@@ -19,6 +19,13 @@ dependencies = [
 qlora = [
   "bitsandbytes>=0.43.0; platform_system != 'Windows'",
 ]
+dev = [
+  "pytest>=8.3.0",
+]
 
 [tool.uv]
 default-groups = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

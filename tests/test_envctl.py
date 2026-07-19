@@ -4,10 +4,15 @@ import tomllib
 import unittest
 from pathlib import Path
 
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 from scripts import dependency_policy
 from scripts import envctl
 from scripts import env_policy
 from scripts import lock_identity
+from scripts import train_first_sft
 
 
 class EnvctlCliTests(unittest.TestCase):
@@ -122,6 +127,36 @@ class EnvctlCliTests(unittest.TestCase):
         self.assertFalse(outcome["ok"])
         self.assertEqual(outcome["status"], "preflight-failed")
         self.assertIn("future work", outcome["message"])
+
+    def test_training_entrypoint_uses_processing_class_for_current_trl_api(self) -> None:
+        kwargs = train_first_sft.build_sft_trainer_kwargs(
+            model=object(),
+            args=object(),
+            train_dataset=object(),
+            eval_dataset=None,
+            tokenizer=object(),
+            dataset_text_field="text",
+            max_seq_length=128,
+            peft_config=None,
+        )
+
+        self.assertIn("processing_class", kwargs)
+        self.assertNotIn("tokenizer", kwargs)
+
+    def test_training_entrypoint_uses_formatting_func_for_current_trl_api(self) -> None:
+        kwargs = train_first_sft.build_sft_trainer_kwargs(
+            model=object(),
+            args=object(),
+            train_dataset=object(),
+            eval_dataset=None,
+            tokenizer=object(),
+            dataset_text_field="text",
+            max_seq_length=128,
+            peft_config=None,
+        )
+
+        self.assertIn("formatting_func", kwargs)
+        self.assertNotIn("dataset_text_field", kwargs)
 
 
 if __name__ == "__main__":

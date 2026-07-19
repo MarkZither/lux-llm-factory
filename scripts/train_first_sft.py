@@ -1,4 +1,5 @@
 import argparse
+import inspect
 import os
 import random
 from pathlib import Path
@@ -28,6 +29,42 @@ def _set_determinism(seed: int) -> None:
 
 def _ensure_parent(path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+
+
+def build_sft_trainer_kwargs(
+    *,
+    model: object,
+    args: object,
+    train_dataset: object,
+    eval_dataset: object | None,
+    tokenizer: object,
+    dataset_text_field: str,
+    max_seq_length: int,
+    peft_config: object | None,
+) -> dict:
+    kwargs = {
+        "model": model,
+        "args": args,
+        "train_dataset": train_dataset,
+        "eval_dataset": eval_dataset,
+        "peft_config": peft_config,
+    }
+
+    signature = inspect.signature(SFTTrainer.__init__)
+    if "processing_class" in signature.parameters:
+        kwargs["processing_class"] = tokenizer
+    else:
+        kwargs["tokenizer"] = tokenizer
+
+    if "dataset_text_field" in signature.parameters:
+        kwargs["dataset_text_field"] = dataset_text_field
+    else:
+        kwargs["formatting_func"] = lambda sample: sample.get(dataset_text_field, "")
+
+    if "max_seq_length" in signature.parameters:
+        kwargs["max_seq_length"] = max_seq_length
+
+    return kwargs
 
 
 def main() -> None:
@@ -88,14 +125,16 @@ def main() -> None:
     )
 
     trainer = SFTTrainer(
-        model=model,
-        args=train_args,
-        train_dataset=ds["train"],
-        eval_dataset=ds.get("validation"),
-        tokenizer=tokenizer,
-        dataset_text_field=text_field,
-        max_seq_length=int(config["training"].get("max_seq_length", 512)),
-        peft_config=peft_config,
+        **build_sft_trainer_kwargs(
+            model=model,
+            args=train_args,
+            train_dataset=ds["train"],
+            eval_dataset=ds.get("validation"),
+            tokenizer=tokenizer,
+            dataset_text_field=text_field,
+            max_seq_length=int(config["training"].get("max_seq_length", 512)),
+            peft_config=peft_config,
+        )
     )
 
     trainer.train()
