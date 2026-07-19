@@ -43,7 +43,7 @@
 
 ## Phase 6: Polish and Cross-Cutting
 
-- [ ] [P] Add conformance validation playbook for CC-001 through CC-004 in docs/features/deterministic-python-foundation/conformance.md with expected evidence artifacts.
-- [ ] [P] Add measurement protocol for SC-001 through SC-004 in docs/features/deterministic-python-foundation/measurement-protocol.md including onboarding timing and identity match checks.
-- [ ] Define profile promotion criteria from optional to baseline in docs/features/deterministic-python-foundation/profile-progression.md to close handoff pending decision.
-- [ ] Add implementation handoff summary and traceability matrix update in docs/features/deterministic-python-foundation/handoff-envelope.md linking completed tasks to FR, CC, and SC coverage.
+- [x] [P] Add conformance validation playbook for CC-001 through CC-004 in docs/features/deterministic-python-foundation/conformance.md with expected evidence artifacts.
+- [x] [P] Add measurement protocol for SC-001 through SC-004 in docs/features/deterministic-python-foundation/measurement-protocol.md including onboarding timing and identity match checks.
+- [x] Define profile promotion criteria from optional to baseline in docs/features/deterministic-python-foundation/profile-progression.md to close handoff pending decision.
+- [x] Add implementation handoff summary and traceability matrix update in docs/features/deterministic-python-foundation/handoff-envelope.md linking completed tasks to FR, CC, and SC coverage.
