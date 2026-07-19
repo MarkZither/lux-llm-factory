@@ -1,0 +1,16 @@
+{
+  "lock_version": "1.0",
+  "manifest_digest": "e19078a4ad03b4dc51034a8d90855ebb3f660664a6d9e44874ca2f1bfa7fb76d",
+  "package_entries": [
+    {
+      "extra": null,
+      "name": "python",
+      "source": "pypi",
+      "version": "3.14"
+    }
+  ],
+  "policy_version": "1.0",
+  "profile_id": "local-cpu",
+  "resolver_identity": "uv-sync",
+  "source_digest": "cd19f961d21e4cce808131d3cab61dcebf296da950e1f77e6942e8db8c063f25"
+}
