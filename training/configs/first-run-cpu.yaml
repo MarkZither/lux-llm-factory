@@ -1,0 +1,31 @@
+seed: 42
+
+model:
+  # For first success on CPU, keep this tiny. Replace later with Gemma once hardware is ready.
+  name: sshleifer/tiny-gpt2
+
+data:
+  train_file: data/processed/nrule_train.jsonl
+  eval_file: data/processed/nrule_eval.jsonl
+  text_field: text
+
+lora:
+  enabled: true
+  r: 8
+  alpha: 16
+  dropout: 0.05
+  # Tiny GPT2 uses c_attn. Change this list for other base models.
+  target_modules:
+    - c_attn
+
+training:
+  batch_size: 1
+  grad_accum: 4
+  learning_rate: 0.0002
+  max_steps: 30
+  max_seq_length: 256
+  logging_steps: 1
+  save_steps: 15
+
+output:
+  dir: models/first-run-cpu

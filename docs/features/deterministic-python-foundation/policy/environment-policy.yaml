@@ -1,0 +1,20 @@
+policy_version: "1.0"
+python_baseline:
+  version: "3.14"
+  upgrade_rule: "Minor upgrades require an explicit policy refresh and documentation review."
+virtual_environment:
+  expectation: ".venv"
+  activation_hint: "Use uv venv --python 3.14 and uv run to manage the environment."
+dependency_policy:
+  lock_strategy: "Generate a deterministic lock manifest from declared inputs."
+  source_policy: "Resolve only from the documented package source and fail fast on drift."
+source_policy:
+  default_source: "pypi"
+  fallback_behavior: "Do not silently switch sources."
+requirements:
+  - FR-001
+  - FR-002
+  - FR-003
+  - FR-004
+  - FR-005
+  - FR-008
