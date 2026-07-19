@@ -1,8 +1,10 @@
+import sys
 import tempfile
 import tomllib
 import unittest
 from pathlib import Path
 
+from scripts import dependency_policy
 from scripts import envctl
 from scripts import env_policy
 from scripts import lock_identity
@@ -67,6 +69,59 @@ class EnvctlCliTests(unittest.TestCase):
 
         self.assertEqual(manifest_a["manifest_digest"], manifest_b["manifest_digest"])
         self.assertEqual(manifest_a["source_digest"], manifest_b["source_digest"])
+
+    def test_dependency_rules_are_loaded_and_can_report_rule_ids(self) -> None:
+        result = dependency_policy.evaluate_dependency_policy(
+            artifacts=[{"name": "torch", "version": "2.4.0", "requirement": ">=2.4.0"}],
+            rules_path=Path("docs/features/deterministic-python-foundation/policy/dependency-rules.yaml"),
+        )
+
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["evaluated_rules"], 1)
+
+    def test_environment_validation_reports_dependency_rule_violations(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            outcome = envctl.validate_environment(
+                profile_id="local-cpu",
+                dependency_artifacts=[{"name": "transformers", "version": "4.43.0", "requirement": ">=4.44.0"}],
+                state_dir=Path(tmpdir),
+            )
+
+            self.assertFalse(outcome["ok"])
+            self.assertEqual(outcome["setup_outcome"]["dependency_check"], "failed")
+            self.assertEqual(outcome["rule_id"], "DPR-002")
+
+    def test_default_validation_path_evaluates_dependency_rules(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            outcome = envctl.validate_environment(profile_id="local-cpu", state_dir=Path(tmpdir))
+
+            self.assertIn("dependency_policy", outcome)
+            self.assertGreater(outcome["dependency_policy"]["evaluated_rules"], 0)
+
+    def test_run_entrypoint_executes_canonical_training_command_after_preflight(self) -> None:
+        calls: list[tuple[list[str], Path]] = []
+
+        def runner(command: list[str], cwd: Path) -> int:
+            calls.append((command, cwd))
+            return 0
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            outcome = envctl.run_entrypoint(profile_id="local-cpu", state_dir=Path(tmpdir), runner=runner)
+
+        self.assertTrue(outcome["ok"])
+        self.assertEqual(outcome["status"], "ready")
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(calls[0][0][0], sys.executable)
+        self.assertTrue(calls[0][0][1].endswith("scripts/train_first_sft.py"))
+        self.assertEqual(calls[0][0][2], "--config")
+
+    def test_run_entrypoint_marks_non_local_profiles_as_future_work(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            outcome = envctl.run_entrypoint(profile_id="runpod", state_dir=Path(tmpdir))
+
+        self.assertFalse(outcome["ok"])
+        self.assertEqual(outcome["status"], "preflight-failed")
+        self.assertIn("future work", outcome["message"])
 
 
 if __name__ == "__main__":

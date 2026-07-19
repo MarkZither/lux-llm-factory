@@ -28,18 +28,18 @@
 
 ## Phase 4: User Story 2 - Intentional Version Boundaries (P2)
 
-- [ ] Implement tracer bullet for version-boundary governance in scripts/envctl.py validate command to prove pin-versus-constraint checks against one dependency group for FR-005.
-- [ ] Implement dependency rule catalog in docs/features/deterministic-python-foundation/policy/dependency-rules.yaml covering all core dependency groups for FR-005.
-- [ ] [P] Implement policy rule evaluator in scripts/dependency_policy.py to enforce pinned or constrained declarations against resolved artifacts for FR-004 and FR-005.
-- [ ] [P] Implement lock update workflow documentation in docs/features/deterministic-python-foundation/lock-governance.md including review gate and rollback steps for FR-004.
-- [ ] Implement policy violation reporting with explicit rule identifiers in scripts/envctl.py and docs/features/deterministic-python-foundation/contracts/error-codes.md for CC-002.
+- [x] Implement tracer bullet for version-boundary governance in scripts/envctl.py validate command to prove pin-versus-constraint checks against one dependency group for FR-005.
+- [x] Implement dependency rule catalog in docs/features/deterministic-python-foundation/policy/dependency-rules.yaml covering all core dependency groups for FR-005.
+- [x] [P] Implement policy rule evaluator in scripts/dependency_policy.py to enforce pinned or constrained declarations against resolved artifacts for FR-004 and FR-005.
+- [x] [P] Implement lock update workflow documentation in docs/features/deterministic-python-foundation/lock-governance.md including review gate and rollback steps for FR-004.
+- [x] Implement policy violation reporting with explicit rule identifiers in scripts/envctl.py and docs/features/deterministic-python-foundation/contracts/error-codes.md for CC-002.
 
 ## Phase 5: User Story 3 - Canonical Execution Entry (P3)
 
-- [ ] Implement tracer bullet for canonical execution entry in scripts/envctl.py run command that enforces preflight validation before invoking scripts/train_first_sft.py for FR-006.
-- [ ] [P] Implement canonical command documentation source in docs/features/deterministic-python-foundation/commands.md for setup, validate, and run entrypoints mapped to DOC-CMD-001.
-- [ ] [P] Add profile-aware runtime invocation adapter in scripts/runtime_profiles.py for local-cpu baseline and optional hosted or runpod profiles under one command contract.
-- [ ] Implement command discoverability links in README.md and docs/features/deterministic-python-foundation/setup.md so contributors find one authoritative command path for FR-007 and CC-004.
+- [x] Implement tracer bullet for canonical execution entry in scripts/envctl.py run command that enforces preflight validation before invoking scripts/train_first_sft.py for FR-006.
+- [x] [P] Implement canonical command documentation source in docs/features/deterministic-python-foundation/commands.md for setup, validate, and run entrypoints mapped to DOC-CMD-001.
+- [x] [P] Add profile-aware runtime invocation adapter in scripts/runtime_profiles.py for local-cpu baseline and deferred future-work handling for hosted or runpod profiles under one command contract.
+- [x] Implement command discoverability links in README.md and docs/features/deterministic-python-foundation/setup.md so contributors find one authoritative command path for FR-007 and CC-004.
 
 ## Phase 6: Polish and Cross-Cutting
 

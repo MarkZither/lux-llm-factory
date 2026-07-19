@@ -19,4 +19,4 @@ uv run python scripts/envctl.py validate --profile local-cpu
 uv run python scripts/envctl.py run --profile local-cpu
 ```
 
-This document is the authoritative setup path. Follow it exactly and do not rely on alternate hidden workflows.
+This document is the authoritative setup path. Follow it exactly and do not rely on alternate hidden workflows. The command contract is documented in [docs/features/deterministic-python-foundation/commands.md](docs/features/deterministic-python-foundation/commands.md).

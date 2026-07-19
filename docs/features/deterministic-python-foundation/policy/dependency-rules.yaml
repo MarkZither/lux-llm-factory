@@ -1,0 +1,16 @@
+rules:
+  - rule_id: DPR-001
+    dependency: torch
+    policy: pin
+    expected_version: 2.4.0
+    rationale: Keep PyTorch on the baseline runtime tested for the training stack.
+  - rule_id: DPR-002
+    dependency: transformers
+    policy: constraint
+    requirement: ">=4.44.0"
+    rationale: Keep the Transformers runtime on the minimum supported baseline and allow compatible upgrades.
+  - rule_id: DPR-003
+    dependency: accelerate
+    policy: constraint
+    requirement: ">=0.33.0"
+    rationale: Allow small compatible upgrades while preserving the minimum tested integration layer.

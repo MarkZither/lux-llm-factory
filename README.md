@@ -22,7 +22,7 @@ The project emphasizes:
 
 ### Canonical setup flow
 
-Use the deterministic setup flow documented in [docs/features/deterministic-python-foundation/setup.md](docs/features/deterministic-python-foundation/setup.md) as the single supported onboarding path.
+Use the deterministic setup flow documented in [docs/features/deterministic-python-foundation/setup.md](docs/features/deterministic-python-foundation/setup.md) and the canonical command reference in [docs/features/deterministic-python-foundation/commands.md](docs/features/deterministic-python-foundation/commands.md) as the single supported onboarding path.
 
 ```powershell
 uv python install 3.14

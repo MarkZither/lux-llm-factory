@@ -8,7 +8,7 @@
 - **Objective**: Establish one deterministic local setup foundation so contributors can prepare the project environment and run project entrypoints with repeatable outcomes.
 - **Primary user**: New and returning contributors working in local development environments.
 - **Value delivered**: Faster onboarding, fewer setup failures, and reproducible training preparation across contributors.
-- **Scope**: Included: Python toolchain standardization, uv-based environment management, dependency resolution and lock policy, canonical setup and execution entrypoints, and setup documentation. Excluded: training logic changes, model quality improvements, CI redesign, and cloud deployment workflows.
+- **Scope**: Included: Python toolchain standardization, uv-based environment management, dependency resolution and lock policy, canonical setup and execution entrypoints, and setup documentation. Excluded: training logic changes, model quality improvements, CI redesign, and cloud deployment workflows. Only the `local-cpu` profile is in scope for the current implementation; hosted profiles such as `colab-free`, `kaggle-free`, `hf-free`, and `runpod` are deferred as future work until a validation path exists.
 - **Change type**: new surface
 - **Describes AI capability**: no
 - **Primary success criterion**: New contributors can complete deterministic environment initialization using one canonical documented flow on their first attempt.
