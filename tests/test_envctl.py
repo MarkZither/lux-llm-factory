@@ -4,6 +4,8 @@ import tomllib
 import unittest
 from pathlib import Path
 
+import torch
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
@@ -157,6 +159,23 @@ class EnvctlCliTests(unittest.TestCase):
 
         self.assertIn("formatting_func", kwargs)
         self.assertNotIn("dataset_text_field", kwargs)
+
+    def test_training_entrypoint_replaces_gemma_clippable_linear_with_plain_linear(self) -> None:
+        from transformers.models.gemma4.modeling_gemma4 import Gemma4ClippableLinear
+
+        class DummyConfig:
+            use_clipped_linears = False
+
+        class DummyModel(torch.nn.Module):
+            def __init__(self) -> None:
+                super().__init__()
+                self.proj = Gemma4ClippableLinear(DummyConfig(), 4, 4)
+
+        model = DummyModel()
+        patched = train_first_sft._patch_model_for_peft_compatibility(model)
+
+        self.assertIsInstance(patched.proj, torch.nn.Linear)
+        self.assertNotIsInstance(patched.proj, Gemma4ClippableLinear)
 
 
 if __name__ == "__main__":

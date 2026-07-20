@@ -1,0 +1,32 @@
+seed: 42
+
+model:
+  name: google/gemma-4-E2B
+
+data:
+  train_file: data/processed/nrule_train.jsonl
+  eval_file: data/processed/nrule_eval.jsonl
+  text_field: text
+
+lora:
+  enabled: true
+  r: 8
+  alpha: 16
+  dropout: 0.05
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+
+training:
+  batch_size: 1
+  grad_accum: 4
+  learning_rate: 0.0002
+  max_steps: 2
+  max_seq_length: 256
+  logging_steps: 1
+  save_steps: 2
+
+output:
+  dir: models/first-run-cpu-gemma-2step

@@ -81,6 +81,25 @@ Important practical note:
 - QLoRA usually requires Linux and CUDA for practical speed.
 - On Windows, use WSL2 with NVIDIA CUDA when you are ready for QLoRA toolchains.
 
+### Gemma 4 PEFT compatibility note
+
+The canonical training entrypoint includes a compatibility shim in scripts/train_first_sft.py called _patch_model_for_peft_compatibility. This function is used when the selected model is Gemma 4 and LoRA is enabled.
+
+What it does:
+- It walks the loaded model and finds Gemma 4 projection layers implemented as Gemma4ClippableLinear wrappers.
+- For each wrapper it replaces the wrapper with a plain torch.nn.Linear layer that preserves the learned weight values from the original projection.
+- The replacement keeps the same input and output dimensions so the rest of the model architecture remains intact.
+
+Why it exists:
+- PEFT 0.19.1 currently rejects Gemma 4's custom projection wrapper as an unsupported target module during LoRA injection.
+- The wrapper is functionally a thin container around a standard linear layer, so swapping it for a plain linear layer is a compatibility fix rather than a model-architecture change.
+- This lets the smoke-test training path proceed on the current dependency stack without changing the training config or skipping LoRA entirely.
+
+Impact:
+- The change is limited to the adapter injection path used for LoRA fine-tuning.
+- It does not change the model weights or dataset format; it only makes PEFT see a module type it can attach to.
+- The practical effect is that Gemma 4 smoke runs can start on CPU and reach the training loop instead of failing during adapter setup.
+
 ## Tooling Strategy
 
 This repository uses uv and pyproject.toml for explicit dependency management.

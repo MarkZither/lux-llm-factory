@@ -10,6 +10,7 @@ import yaml
 from datasets import load_dataset
 from peft import LoraConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, set_seed
+from transformers.models.gemma4.modeling_gemma4 import Gemma4ClippableLinear
 from trl import SFTTrainer
 
 
@@ -29,6 +30,21 @@ def _set_determinism(seed: int) -> None:
 
 def _ensure_parent(path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+
+
+def _patch_model_for_peft_compatibility(model: torch.nn.Module) -> torch.nn.Module:
+    """Replace unsupported Gemma 4 wrapper layers with plain Linear layers for PEFT."""
+    for name, module in model.named_modules():
+        if isinstance(module, Gemma4ClippableLinear):
+            parent = model
+            child_parts = name.split(".")
+            if child_parts:
+                for part in child_parts[:-1]:
+                    parent = getattr(parent, part)
+                replacement = torch.nn.Linear(module.linear.in_features, module.linear.out_features, bias=False)
+                replacement.weight.data.copy_(module.linear.weight.data)
+                setattr(parent, child_parts[-1], replacement)
+    return model
 
 
 def build_sft_trainer_kwargs(
@@ -95,10 +111,13 @@ def main() -> None:
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
+    lora_cfg = config.get("lora")
+
     model = AutoModelForCausalLM.from_pretrained(model_name)
+    if lora_cfg and bool(lora_cfg.get("enabled", False)):
+        model = _patch_model_for_peft_compatibility(model)
 
     peft_config = None
-    lora_cfg = config.get("lora")
     if lora_cfg and bool(lora_cfg.get("enabled", False)):
         peft_config = LoraConfig(
             r=int(lora_cfg.get("r", 8)),
