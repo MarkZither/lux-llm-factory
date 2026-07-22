@@ -10,7 +10,6 @@ import yaml
 from datasets import load_dataset
 from peft import LoraConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, set_seed
-from transformers.models.gemma4.modeling_gemma4 import Gemma4ClippableLinear
 from trl import SFTTrainer
 
 
@@ -32,19 +31,12 @@ def _ensure_parent(path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
 
 
-def _patch_model_for_peft_compatibility(model: torch.nn.Module) -> torch.nn.Module:
-    """Replace unsupported Gemma 4 wrapper layers with plain Linear layers for PEFT."""
-    for name, module in model.named_modules():
-        if isinstance(module, Gemma4ClippableLinear):
-            parent = model
-            child_parts = name.split(".")
-            if child_parts:
-                for part in child_parts[:-1]:
-                    parent = getattr(parent, part)
-                replacement = torch.nn.Linear(module.linear.in_features, module.linear.out_features, bias=False)
-                replacement.weight.data.copy_(module.linear.weight.data)
-                setattr(parent, child_parts[-1], replacement)
-    return model
+def resolve_hf_token() -> str | None:
+    for key in ("HF_TOKEN", "HUGGINGFACE_HUB_TOKEN"):
+        value = os.environ.get(key)
+        if value:
+            return value
+    return None
 
 
 def build_sft_trainer_kwargs(
@@ -90,11 +82,21 @@ def main() -> None:
 
     config = _read_config(Path(args.config))
 
+    hf_token = resolve_hf_token()
+    if hf_token:
+        os.environ["HF_TOKEN"] = hf_token
+        os.environ["HUGGINGFACE_HUB_TOKEN"] = hf_token
+        print("Using Hugging Face token from environment.")
+
     seed = int(config.get("seed", 42))
     _set_determinism(seed)
 
     model_name = config["model"]["name"]
-    output_dir = Path(config["output"]["dir"]) 
+    configured_output_dir = config["output"]["dir"]
+    output_dir = Path(os.environ.get("TRAIN_OUTPUT_DIR", configured_output_dir))
+    if not output_dir.is_absolute():
+        output_dir = (Path.cwd() / output_dir).resolve()
+    output_dir.mkdir(parents=True, exist_ok=True)
     _ensure_parent(output_dir / "checkpoint-placeholder")
 
     train_path = config["data"]["train_file"]
@@ -114,8 +116,6 @@ def main() -> None:
     lora_cfg = config.get("lora")
 
     model = AutoModelForCausalLM.from_pretrained(model_name)
-    if lora_cfg and bool(lora_cfg.get("enabled", False)):
-        model = _patch_model_for_peft_compatibility(model)
 
     peft_config = None
     if lora_cfg and bool(lora_cfg.get("enabled", False)):

@@ -1,3 +1,4 @@
+import os
 import sys
 import tempfile
 import tomllib
@@ -44,6 +45,13 @@ class EnvctlCliTests(unittest.TestCase):
         groups = metadata.get("dependency-groups", {})
         self.assertIn("qlora", groups)
         self.assertNotIn("axolotl", groups)
+
+    def test_project_dependencies_include_torchao(self) -> None:
+        with Path("pyproject.toml").open("rb") as handle:
+            metadata = tomllib.load(handle)
+
+        dependencies = metadata.get("dependencies", [])
+        self.assertTrue(any(dep.startswith("torchao") for dep in dependencies))
 
     def test_setup_reports_structured_outcome_and_writes_lock_state(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -130,6 +138,10 @@ class EnvctlCliTests(unittest.TestCase):
         self.assertEqual(outcome["status"], "preflight-failed")
         self.assertIn("future work", outcome["message"])
 
+    def test_training_entrypoint_resolves_hf_token_from_environment(self) -> None:
+        with unittest.mock.patch.dict(os.environ, {"HF_TOKEN": "hf-secret"}, clear=False):
+            self.assertEqual(train_first_sft.resolve_hf_token(), "hf-secret")
+
     def test_training_entrypoint_uses_processing_class_for_current_trl_api(self) -> None:
         kwargs = train_first_sft.build_sft_trainer_kwargs(
             model=object(),
@@ -160,22 +172,6 @@ class EnvctlCliTests(unittest.TestCase):
         self.assertIn("formatting_func", kwargs)
         self.assertNotIn("dataset_text_field", kwargs)
 
-    def test_training_entrypoint_replaces_gemma_clippable_linear_with_plain_linear(self) -> None:
-        from transformers.models.gemma4.modeling_gemma4 import Gemma4ClippableLinear
-
-        class DummyConfig:
-            use_clipped_linears = False
-
-        class DummyModel(torch.nn.Module):
-            def __init__(self) -> None:
-                super().__init__()
-                self.proj = Gemma4ClippableLinear(DummyConfig(), 4, 4)
-
-        model = DummyModel()
-        patched = train_first_sft._patch_model_for_peft_compatibility(model)
-
-        self.assertIsInstance(patched.proj, torch.nn.Linear)
-        self.assertNotIsInstance(patched.proj, Gemma4ClippableLinear)
 
 
 if __name__ == "__main__":
